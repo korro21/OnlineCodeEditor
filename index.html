@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Code Orange</title>
+	<script
+  src="https://code.jquery.com/jquery-1.12.4.js"
+  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous"></script>
+	<style>
+		*{
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			min-width: 680px;
+		}
+		.header{
+			background: orange;
+			color:white;
+			overflow: auto;
+			position: relative;
+		}
+		.logo{
+			width:200px;
+			display: inline-block;
+			
+		}
+		.logo p{
+			font-size: 25px;
+			font-family: cursive;
+			padding: 7px;
+		}
+		.tabButtons{
+			display: inline-block;
+			width:400px;
+			height: 100%;
+			position: absolute;
+			left:-49px;right:0;
+			margin: auto;
+			text-align:center;
+			padding: 18px;
+			overflow-y:hidden;
+		}
+		.tab{
+			border:0;
+			padding: 5px;
+			font-size: 18px;
+			outline: none;
+			background:#3399ff;
+			color: white;
+			border-radius:6px 6px 0 0 ;
+			border:2px solid gray;
+			cursor: pointer;
+		}
+		.tab:hover{
+			background: white;
+			color:#3399ff; 
+		}
+		.active{
+			background:gray;
+			border-color:#3399ff;
+		}
+		.panel{
+			border: 0;
+			border-right: 1PX solid black;
+			width: 24.5%;
+			height:90vh;
+		}
+		textarea{
+			font-size: 17px;
+			padding: 10px;
+		}
+
+		#html-panel{
+			color: #ff8000;
+		}
+		#css-panel{
+			color: blue;
+		}
+		#javascript-panel{
+			color: green;
+		}
+		.hidden{
+			display:none;
+		}
+
+	</style>
+<body>
+</head>
+		
+	<div class="header">
+			<div class="logo">
+				<p>Code Orange</p>
+			</div>
+			<div class="tabButtons">
+				<button class="tab active" id="html">HTML</button>
+				<button class="tab active" id="css">CSS</button>
+				<button class="tab active" id="javascript">Javascript</button>
+				<button class="tab active" id="output">Output</button>
+			</div>
+		</div>
+	<div class="body">
+		<textarea class="panel" id="html-panel" spellcheck="false" placeholder="HTML..."></textarea>
+		<textarea class="panel" id="css-panel" spellcheck="false" placeholder="CSS..."></textarea>
+		<textarea class="panel" id="javascript-panel" spellcheck="false" placeholder="Javascript..."></textarea>
+		<iframe id="output-panel" class="panel"></iframe>
+	</div>
+	<script>
+		$("textarea").on('change keyup paste', function() {
+			var iframe=document.getElementById("output-panel").contentWindow||document.getElementById("output-panel").contentWindow.document;    
+    		iframe.document.getElementsByTagName("html")[0].innerHTML="<head>"+"<style>"+$("#css-panel").val()+"</style></head><body>"+$("#html-panel").val()+"</body>";
+    		iframe.eval($("#javascript-panel").val());
+   		 });
+		$(".tab").click(function(id){
+			id=$(this).attr("id");
+			$("#"+id+"-panel").toggleClass("hidden");
+			$(this).toggleClass("active");
+			var activetabs=4-$(".hidden").length,w=((100/activetabs)-1)+"%";
+			$(".panel").css("width",w);
+		});
+		
+	</script>
+</body>
+</html>
